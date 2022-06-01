@@ -4,7 +4,8 @@ const { appendFile } = require('fs')
 const path = require('path')
 const bodyParser = require('body-parser')
 const router = express.Router()
-const products =[]
+
+const productController = require('../controllers/productcontroller')
 
 app.use(bodyParser.urlencoded({extended:false}))
 
@@ -12,14 +13,7 @@ router.get('/admin/add-product',(req,res,next)=>{
     res.sendFile(path.join(__dirname,'views','add-product.html'))
 })
 
-router.post('/admin/add-product',(req,res,next)=>{
-    
-    products.push({title:req.body.title})
-    res.redirect('/')
-    
-})
-router.get('/admin/add-products/list',(req,res,next)=>{
-    res.send(products)
-})
+router.post('/admin/add-product',productController.addProducts)
+router.get('/admin/add-products/list',productController.viewProducts)
 exports.routes = router
-exports.products = products
+
